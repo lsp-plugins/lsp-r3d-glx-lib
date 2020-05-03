@@ -17,8 +17,8 @@ HDR_MODULES         = $(foreach dep, $(DEPENDENCIES), $(if $(findstring hdr,$($(
 $(SRC_MODULES) $(HDR_MODULES):
 	@echo "Cloning $($(@)_URL) -> $($(@)_PATH) [$($(@)_BRANCH)]"
 	@test -f "$($(@)_PATH)/.git/config" || $(GIT) clone "$($(@)_URL)" "$($(@)_PATH)"
-	@$(GIT) -C "$($(@)_PATH)" fetch origin --prune --force
-	@$(GIT) -C "$($(@)_PATH)" fetch origin --prune '+refs/heads/*:refs/tags/*' --force
+	@$(GIT) -C "$($(@)_PATH)" fetch origin --force
+	@$(GIT) -C "$($(@)_PATH)" fetch origin '+refs/heads/*:refs/tags/*' --force
 	@$(GIT) -c advice.detachedHead=false -C "$($(@)_PATH)" checkout origin/$($(@)_BRANCH) || \
 	 $(GIT) -c advice.detachedHead=false -C "$($(@)_PATH)" checkout refs/tags/$($(@)_BRANCH)
 

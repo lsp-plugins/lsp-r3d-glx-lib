@@ -11,7 +11,7 @@ LSP_TEST_FW_TYPE           := src
 
 LSP_R3D_BASE_LIB_VERSION   := 0.5.0
 LSP_R3D_BASE_LIB_NAME      := lsp-r3d-base-lib
-LSP_R3D_BASE_LIB_URL       := https://github.com/sadko4u/$(LSP_R3D_BASE_LIB).git
+LSP_R3D_BASE_LIB_URL       := https://github.com/sadko4u/$(LSP_R3D_BASE_LIB_NAME).git
 LSP_R3D_BASE_LIB_TYPE      := src
 
 XLIB_VERSION               := system
