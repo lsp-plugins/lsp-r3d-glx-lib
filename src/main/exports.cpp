@@ -13,20 +13,14 @@ namespace lsp
     namespace glx
     {
         factory_t   factory;
+
+        LSP_R3D_GLX_LIB_CEXPORT
+        LSP_DEFINE_VERSION_FUNC(LSP_R3D_GLX_LIB)
+
+        LSP_R3D_GLX_LIB_CEXPORT
+        LSP_R3D_FACTORY_FUNCTION_HEADER
+        {
+            return &lsp::glx::factory;
+        }
     }
 }
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif /* __cplusplus */
-    LSP_DEFINE_VERSION_FUNC(LSP_R3D_GLX_LIB)
-
-    LSP_R3D_FACTORY_FUNCTION_HEADER
-    {
-        return &lsp::glx::factory;
-    }
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
