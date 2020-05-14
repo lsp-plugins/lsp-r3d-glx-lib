@@ -24,3 +24,5 @@ OPENGL_TYPE                := pkg
 
 STDLIB_VERSION             := system
 STDLIB_LDFLAGS             := -lpthread -ldl
+STDLIB_TYPE                := opt
+
