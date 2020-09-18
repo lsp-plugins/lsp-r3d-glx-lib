@@ -2,6 +2,8 @@
 * RECENT CHANGES
 *******************************************************************************
 
+=== 0.5.3 ===
+
 === 0.5.2 ===
 * Updated build scripts that now use tags without prefixes first.
 * Updated headers and license files to match LGPL3+ license.
