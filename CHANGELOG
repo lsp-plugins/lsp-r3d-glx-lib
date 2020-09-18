@@ -3,6 +3,9 @@
 *******************************************************************************
 
 === 0.5.2 ===
+* Updated build scripts that now use tags without prefixes first.
+* Updated headers and license files to match LGPL3+ license.
+* Updated make files to produce static library, pkgconf file and source tree.
 
 === 0.5.1 ===
 * Build update.
