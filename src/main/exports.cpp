@@ -21,6 +21,7 @@
 
 #include <lsp-plug.in/common/types.h>
 #include <lsp-plug.in/r3d/glx/factory.h>
+#include <lsp-plug.in/r3d/builtin.h>
 
 namespace lsp
 {
@@ -28,9 +29,14 @@ namespace lsp
     {
         factory_t   factory;
 
+        // Builtin factory binding
+        BUILTIN_FACTORY(builtin_glx_factory, &lsp::glx::factory);
+
+        // Version function
         LSP_R3D_GLX_LIB_CEXPORT
         LSP_DEFINE_VERSION_FUNC(LSP_R3D_GLX_LIB)
 
+        // Function that returns factory
         LSP_R3D_GLX_LIB_CEXPORT
         LSP_R3D_FACTORY_FUNCTION_HEADER
         {
