@@ -32,7 +32,7 @@ namespace lsp
             factory_t   factory;
 
             // Builtin factory binding
-            BUILTIN_FACTORY(builtin_glx_factory, &lsp::r3d::glx::factory);
+            LSP_R3D_BUILTIN_FACTORY(builtin_glx_factory, &lsp::r3d::glx::factory);
 
             // Version function
             LSP_R3D_GLX_LIB_CEXPORT
@@ -40,10 +40,7 @@ namespace lsp
 
             // Function that returns factory
             LSP_R3D_GLX_LIB_CEXPORT
-            LSP_R3D_FACTORY_FUNCTION_HEADER
-            {
-                return &lsp::r3d::glx::factory;
-            }
+            LSP_R3D_BULTIN_FACTORY_FUNCTION
         }
     }
 }
