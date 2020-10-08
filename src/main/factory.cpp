@@ -27,43 +27,46 @@
 
 namespace lsp
 {
-    namespace glx
+    namespace r3d
     {
-        const r3d::backend_metadata_t factory_t::sMetadata[] =
+        namespace glx
         {
-            { "glx_2x", "openGL 2.0+ (GLX)", "glx_opengl_v2" }
-        };
-
-        const r3d::backend_metadata_t *factory_t::metadata(r3d::factory_t *handle, size_t id)
-        {
-            size_t count = sizeof(sMetadata) / sizeof(r3d::backend_metadata_t);
-            return (id < count) ? &sMetadata[id] : NULL;
-        }
-
-        r3d::backend_t *factory_t::create(r3d::factory_t *handle, size_t id)
-        {
-            if (id == 0)
+            const r3d::backend_metadata_t factory_t::sMetadata[] =
             {
-                glx::backend_t *res = static_cast<glx::backend_t *>(::malloc(sizeof(glx::backend_t)));
-                if (res == NULL)
-                    return NULL;
+                { "glx_2x", "openGL 2.0+ (GLX)", "glx_opengl_v2" }
+            };
 
-                res->init();
-                return res;
+            const r3d::backend_metadata_t *factory_t::metadata(r3d::factory_t *handle, size_t id)
+            {
+                size_t count = sizeof(sMetadata) / sizeof(r3d::backend_metadata_t);
+                return (id < count) ? &sMetadata[id] : NULL;
             }
-            return NULL;
-        }
 
-        factory_t::factory_t()
-        {
-            #define R3D_GLX_FACTORY_EXP(func)   r3d::factory_t::func = factory_t::func;
-            R3D_GLX_FACTORY_EXP(create);
-            R3D_GLX_FACTORY_EXP(metadata);
-            #undef R3D_GLX_FACTORY_EXP
-        }
+            r3d::backend_t *factory_t::create(r3d::factory_t *handle, size_t id)
+            {
+                if (id == 0)
+                {
+                    glx::backend_t *res = static_cast<glx::backend_t *>(::malloc(sizeof(glx::backend_t)));
+                    if (res == NULL)
+                        return NULL;
 
-        factory_t::~factory_t()
-        {
+                    res->init();
+                    return res;
+                }
+                return NULL;
+            }
+
+            factory_t::factory_t()
+            {
+                #define R3D_GLX_FACTORY_EXP(func)   r3d::factory_t::func = factory_t::func;
+                R3D_GLX_FACTORY_EXP(create);
+                R3D_GLX_FACTORY_EXP(metadata);
+                #undef R3D_GLX_FACTORY_EXP
+            }
+
+            factory_t::~factory_t()
+            {
+            }
         }
     }
 }

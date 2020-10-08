@@ -3,6 +3,7 @@
 *******************************************************************************
 
 === 0.5.3 ===
+* Updated implementation according to the latest interface changes.
 
 === 0.5.2 ===
 * Updated build scripts that now use tags without prefixes first.

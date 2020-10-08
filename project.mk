@@ -19,7 +19,7 @@
 #
 
 # Package version
-ARTIFACT_NAME               = lsp-r3d-glx-lib\
+ARTIFACT_NAME               = lsp-r3d-glx-lib
 ARTIFACT_DESC               = GLX-based 3D backend library for rendering scenes
 ARTIFACT_VARS               = LSP_R3D_GLX_LIB
 ARTIFACT_HEADERS            = lsp-plug.in
@@ -33,6 +33,7 @@ TEST_DEPENDENCIES = \
 DEPENDENCIES = \
   STDLIB \
   LSP_COMMON_LIB \
+  LSP_R3D_IFACE \
   LSP_R3D_BASE_LIB \
   XLIB \
   OPENGL

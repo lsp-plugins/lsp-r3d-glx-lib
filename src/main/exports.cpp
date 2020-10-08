@@ -21,26 +21,29 @@
 
 #include <lsp-plug.in/common/types.h>
 #include <lsp-plug.in/r3d/glx/factory.h>
-#include <lsp-plug.in/r3d/builtin.h>
+#include <lsp-plug.in/r3d/iface/builtin.h>
 
 namespace lsp
 {
-    namespace glx
+    namespace r3d
     {
-        factory_t   factory;
-
-        // Builtin factory binding
-        BUILTIN_FACTORY(builtin_glx_factory, &lsp::glx::factory);
-
-        // Version function
-        LSP_R3D_GLX_LIB_CEXPORT
-        LSP_DEFINE_VERSION_FUNC(LSP_R3D_GLX_LIB)
-
-        // Function that returns factory
-        LSP_R3D_GLX_LIB_CEXPORT
-        LSP_R3D_FACTORY_FUNCTION_HEADER
+        namespace glx
         {
-            return &lsp::glx::factory;
+            factory_t   factory;
+
+            // Builtin factory binding
+            BUILTIN_FACTORY(builtin_glx_factory, &lsp::r3d::glx::factory);
+
+            // Version function
+            LSP_R3D_GLX_LIB_CEXPORT
+            LSP_DEFINE_VERSION_FUNC(LSP_R3D_GLX_LIB)
+
+            // Function that returns factory
+            LSP_R3D_GLX_LIB_CEXPORT
+            LSP_R3D_FACTORY_FUNCTION_HEADER
+            {
+                return &lsp::r3d::glx::factory;
+            }
         }
     }
 }
