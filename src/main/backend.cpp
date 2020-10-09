@@ -538,7 +538,7 @@ namespace lsp
                 if (buffer->vertex.data != NULL)
                 {
                     ::glEnableClientState(GL_VERTEX_ARRAY);
-                    ::glVertexPointer(3, GL_FLOAT,
+                    ::glVertexPointer(4, GL_FLOAT,
                         (buffer->vertex.stride == 0) ? sizeof(r3d::dot4_t) : buffer->vertex.stride,
                         buffer->vertex.data
                     );
