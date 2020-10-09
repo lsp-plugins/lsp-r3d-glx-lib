@@ -554,16 +554,16 @@ namespace lsp
                 // Draw the elements (or arrays, depending on configuration)
                 if (buffer->type != r3d::PRIMITIVE_WIREFRAME_TRIANGLES)
                 {
-                    if (buffer->index.data != NULL)
-                        ::glDrawElements(mode, count, GL_UNSIGNED_INT, buffer->index.data);
+                    if (buffer->element.index != NULL)
+                        ::glDrawElements(mode, count, GL_UNSIGNED_INT, buffer->element.index);
                     else
                         ::glDrawArrays(mode, 0, count);
                 }
                 else
                 {
-                    if (buffer->index.data != NULL)
+                    if (buffer->element.index != NULL)
                     {
-                        const uint32_t *ptr = buffer->index.data;
+                        const uint32_t *ptr = buffer->element.index;
                         for (size_t i=0; i<count; i += 3, ptr += 3)
                             ::glDrawElements(mode, 3, GL_UNSIGNED_INT, ptr);
                     }
