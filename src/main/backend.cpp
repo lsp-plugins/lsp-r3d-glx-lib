@@ -382,14 +382,6 @@ namespace lsp
                 ::glShadeModel(GL_SMOOTH);
                 ::glEnable(GL_RESCALE_NORMAL);
 
-                // Load matrices
-                ::glMatrixMode(GL_PROJECTION);
-                ::glLoadMatrixf(_this->matProjection.m);
-
-                ::glMatrixMode(GL_MODELVIEW);
-                ::glLoadMatrixf(_this->matView.m);
-                ::glMultMatrixf(_this->matWorld.m);
-
                 // Special tuning for non-poligonal primitives
                 ::glPolygonOffset(1.0f, 2.0f);
                 ::glEnable(GL_POLYGON_OFFSET_POINT);
@@ -409,22 +401,7 @@ namespace lsp
 
             status_t backend_t::set_matrix(r3d::backend_t *handle, r3d::matrix_type_t type, const r3d::mat4_t *m)
             {
-                backend_t *_this = static_cast<backend_t *>(handle);
-                status_t res = r3d::base_backend_t::set_matrix(handle, type, m);
-
-                // Need to immediately update matrices?
-                if ((res == STATUS_OK) && (_this->bDrawing))
-                {
-                    // Load matrices
-                    ::glMatrixMode(GL_PROJECTION);
-                    ::glLoadMatrixf(_this->matProjection.m);
-
-                    ::glMatrixMode(GL_MODELVIEW);
-                    ::glLoadMatrixf(_this->matView.m);
-                    ::glMultMatrixf(_this->matWorld.m);
-                }
-
-                return res;
+                return r3d::base_backend_t::set_matrix(handle, type, m);
             }
 
             status_t backend_t::set_lights(r3d::backend_t *handle, const r3d::light_t *lights, size_t count)
@@ -537,6 +514,14 @@ namespace lsp
                     default:
                         return STATUS_BAD_ARGUMENTS;
                 }
+
+                // Load matrices
+                ::glMatrixMode(GL_PROJECTION);
+                ::glLoadMatrixf(_this->matProjection.m);
+                ::glMatrixMode(GL_MODELVIEW);
+                ::glLoadMatrixf(_this->matView.m);
+                ::glMultMatrixf(_this->matWorld.m);
+                ::glMultMatrixf(buffer->model.m);
 
                 // enable blending
                 if (buffer->flags & r3d::BUFFER_BLENDING)
