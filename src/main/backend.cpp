@@ -76,7 +76,7 @@ namespace lsp
 
             void backend_t::construct()
             {
-                backend_t::construct();
+                base_backend_t::construct();
 
                 pDisplay    = NULL;
                 hWnd        = None;
