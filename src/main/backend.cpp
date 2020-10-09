@@ -69,6 +69,43 @@ namespace lsp
                 NULL
             };
 
+            backend_t::backend_t()
+            {
+                construct();
+            }
+
+            void backend_t::construct()
+            {
+                backend_t::construct();
+
+                pDisplay    = NULL;
+                hWnd        = None;
+                hPBuffer    = None;
+                pFBConfig   = NULL;
+                hContext    = NULL;
+                bVisible    = false;
+                bDrawing    = false;
+                bPBuffer    = false;
+
+                // Export virtual table
+                #define R3D_GLX_BACKEND_EXP(func)   r3d::backend_t::func = backend_t::func;
+                R3D_GLX_BACKEND_EXP(init_window);
+                R3D_GLX_BACKEND_EXP(init_offscreen);
+                R3D_GLX_BACKEND_EXP(destroy);
+                R3D_GLX_BACKEND_EXP(locate);
+
+                R3D_GLX_BACKEND_EXP(start);
+                R3D_GLX_BACKEND_EXP(sync);
+                R3D_GLX_BACKEND_EXP(read_pixels);
+                R3D_GLX_BACKEND_EXP(finish);
+
+                R3D_GLX_BACKEND_EXP(set_matrix);
+                R3D_GLX_BACKEND_EXP(set_lights);
+                R3D_GLX_BACKEND_EXP(draw_primitives);
+
+                #undef R3D_GLX_BACKEND_EXP
+            }
+
             void backend_t::destroy(r3d::backend_t *handle)
             {
                 backend_t *_this = static_cast<backend_t *>(handle);
@@ -649,36 +686,6 @@ namespace lsp
                 _this->bDrawing    = false;
 
                 return STATUS_OK;
-            }
-
-            void backend_t::init()
-            {
-                pDisplay    = NULL;
-                hWnd        = None;
-                hPBuffer    = None;
-                pFBConfig   = NULL;
-                hContext    = NULL;
-                bVisible    = false;
-                bDrawing    = false;
-                bPBuffer    = false;
-
-                // Export virtual table
-                #define R3D_GLX_BACKEND_EXP(func)   r3d::backend_t::func = backend_t::func;
-                R3D_GLX_BACKEND_EXP(init_window);
-                R3D_GLX_BACKEND_EXP(init_offscreen);
-                R3D_GLX_BACKEND_EXP(destroy);
-                R3D_GLX_BACKEND_EXP(locate);
-
-                R3D_GLX_BACKEND_EXP(start);
-                R3D_GLX_BACKEND_EXP(sync);
-                R3D_GLX_BACKEND_EXP(read_pixels);
-                R3D_GLX_BACKEND_EXP(finish);
-
-                R3D_GLX_BACKEND_EXP(set_matrix);
-                R3D_GLX_BACKEND_EXP(set_lights);
-                R3D_GLX_BACKEND_EXP(draw_primitives);
-
-                #undef R3D_GLX_BACKEND_EXP
             }
         }
     }

@@ -47,10 +47,8 @@ namespace lsp
                 if (id == 0)
                 {
                     glx::backend_t *res = static_cast<glx::backend_t *>(::malloc(sizeof(glx::backend_t)));
-                    if (res == NULL)
-                        return NULL;
-
-                    res->init();
+                    if (res != NULL)
+                        res->construct();
                     return res;
                 }
                 return NULL;
