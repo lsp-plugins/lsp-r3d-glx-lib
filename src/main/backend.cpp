@@ -387,8 +387,8 @@ namespace lsp
                 ::glLoadMatrixf(_this->matProjection.m);
 
                 ::glMatrixMode(GL_MODELVIEW);
-                ::glLoadMatrixf(_this->matWorld.m);
-                ::glMultMatrixf(_this->matView.m);
+                ::glLoadMatrixf(_this->matView.m);
+                ::glMultMatrixf(_this->matWorld.m);
 
                 // Special tuning for non-poligonal primitives
                 ::glPolygonOffset(1.0f, 2.0f);
@@ -420,8 +420,8 @@ namespace lsp
                     ::glLoadMatrixf(_this->matProjection.m);
 
                     ::glMatrixMode(GL_MODELVIEW);
-                    ::glLoadMatrixf(_this->matWorld.m);
-                    ::glMultMatrixf(_this->matView.m);
+                    ::glLoadMatrixf(_this->matView.m);
+                    ::glMultMatrixf(_this->matWorld.m);
                 }
 
                 return res;
