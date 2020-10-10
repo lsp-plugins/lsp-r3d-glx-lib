@@ -22,6 +22,7 @@
 #include <lsp-plug.in/common/types.h>
 #include <lsp-plug.in/common/debug.h>
 #include <lsp-plug.in/r3d/glx/backend.h>
+#include <stdlib.h>
 
 namespace lsp
 {
@@ -29,6 +30,21 @@ namespace lsp
     {
         namespace glx
         {
+            enum buffer_state_t
+            {
+                DBUF_VINDEX  = 1 << 0,
+                DBUF_NORMAL  = 1 << 1,
+                DBUF_NINDEX  = 1 << 2,
+                DBUF_COLOR   = 1 << 3,
+                DBUF_CINDEX  = 1 << 4,
+
+                DBUF_NORMAL_FLAGS = DBUF_NORMAL | DBUF_NINDEX,
+                DBUF_COLOR_FLAGS  = DBUF_COLOR  | DBUF_CINDEX,
+                DBUF_INDEX_MASK   = DBUF_VINDEX | DBUF_NINDEX | DBUF_CINDEX
+            };
+
+            #define VATTR_BUFFER_SIZE       3072    /* Multiple of 3 */
+
             static GLint rgba24x32[]    = { GLX_RGBA, GLX_RED_SIZE, 8, GLX_GREEN_SIZE, 8, GLX_BLUE_SIZE, 8, GLX_ALPHA_SIZE, 8, GLX_DEPTH_SIZE, 32, GLX_DOUBLEBUFFER, None };
             static GLint rgba24x24[]    = { GLX_RGBA, GLX_RED_SIZE, 8, GLX_GREEN_SIZE, 8, GLX_BLUE_SIZE, 8, GLX_ALPHA_SIZE, 8, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
             static GLint rgba16x24[]    = { GLX_RGBA, GLX_RED_SIZE, 5, GLX_GREEN_SIZE, 6, GLX_BLUE_SIZE, 5, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
@@ -87,6 +103,8 @@ namespace lsp
                 bDrawing    = false;
                 bPBuffer    = false;
 
+                vxBuffer    = NULL;
+
                 // Export virtual table
                 #define R3D_GLX_BACKEND_EXP(func)   r3d::backend_t::func = backend_t::func;
                 R3D_GLX_BACKEND_EXP(init_window);
@@ -109,6 +127,13 @@ namespace lsp
             void backend_t::destroy(r3d::backend_t *handle)
             {
                 backend_t *_this = static_cast<backend_t *>(handle);
+
+                // Destroy vertex attributes buffer
+                if (_this->vxBuffer != NULL)
+                {
+                    free(_this->vxBuffer);
+                    _this->vxBuffer     = NULL;
+                }
 
                 // Destroy pBuffer
                 if (_this->hPBuffer != None)
@@ -474,6 +499,179 @@ namespace lsp
                 return STATUS_OK;
             }
 
+            void gl_draw_arrays_simple(GLenum mode, size_t bstate, const r3d::buffer_t *buffer, size_t count)
+            {
+                // Enable vertex pointer (if present)
+                ::glEnableClientState(GL_VERTEX_ARRAY);
+                ::glVertexPointer(4, GL_FLOAT,
+                    (buffer->vertex.stride == 0) ? sizeof(r3d::dot4_t) : buffer->vertex.stride,
+                    buffer->vertex.data
+                );
+
+                // Enable normal pointer
+                if (bstate & DBUF_NORMAL)
+                {
+                    ::glEnableClientState(GL_NORMAL_ARRAY);
+                    ::glNormalPointer(GL_FLOAT,
+                        (buffer->normal.stride == 0) ? sizeof(r3d::vec4_t) : buffer->normal.stride,
+                        buffer->normal.data
+                    );
+                }
+                else
+                    ::glDisableClientState(GL_NORMAL_ARRAY);
+
+                // Enable color pointer
+                if (bstate & DBUF_COLOR)
+                {
+                    ::glEnableClientState(GL_COLOR_ARRAY);
+                    ::glColorPointer(4, GL_FLOAT,
+                        (buffer->color.stride == 0) ? sizeof(r3d::color_t) : buffer->color.stride,
+                        buffer->color.data
+                    );
+                }
+                else
+                {
+                    ::glColor4fv(&buffer->color.dfl.r);         // Set-up default color
+                    ::glDisableClientState(GL_COLOR_ARRAY);
+                }
+
+                // Draw the elements (or arrays, depending on configuration)
+                if (buffer->type != r3d::PRIMITIVE_WIREFRAME_TRIANGLES)
+                {
+                    if (bstate & DBUF_VINDEX)
+                        ::glDrawElements(mode, count, GL_UNSIGNED_INT, buffer->vertex.index);
+                    else
+                        ::glDrawArrays(mode, 0, count);
+                }
+                else
+                {
+                    if (bstate & DBUF_VINDEX)
+                    {
+                        const uint32_t *ptr = buffer->vertex.index;
+                        for (size_t i=0; i<count; i += 3, ptr += 3)
+                            ::glDrawElements(mode, 3, GL_UNSIGNED_INT, ptr);
+                    }
+                    else
+                    {
+                        for (size_t i=0; i<count; i += 3)
+                            ::glDrawArrays(mode, i, 3);
+                    }
+                }
+
+                // Disable previous settings
+                if (bstate & DBUF_COLOR)
+                    ::glDisableClientState(GL_COLOR_ARRAY);
+                if (bstate & DBUF_NORMAL)
+                    ::glDisableClientState(GL_NORMAL_ARRAY);
+                ::glDisableClientState(GL_VERTEX_ARRAY);
+            }
+
+            void gl_draw_arrays_indexed(r3d::backend_t *handle, GLenum mode, size_t bstate, const r3d::buffer_t *buffer, size_t count)
+            {
+                backend_t *_this = static_cast<backend_t *>(handle);
+
+                // Lazy initialization: allocate temporary buffer
+                if (_this->vxBuffer == NULL)
+                {
+                    _this->vxBuffer = reinterpret_cast<vertex_t *>(malloc(VATTR_BUFFER_SIZE * sizeof(vertex_t)));
+                    if (_this->vxBuffer == NULL)
+                        return;
+                }
+
+                // Enable vertex pointer
+                ::glEnableClientState(GL_VERTEX_ARRAY);
+                ::glVertexPointer(4, GL_FLOAT, sizeof(vertex_t), &_this->vxBuffer->v);
+
+                // Enable normal pointer
+                if (bstate & DBUF_NORMAL)
+                {
+                    ::glEnableClientState(GL_NORMAL_ARRAY);
+                    ::glNormalPointer(GL_FLOAT, sizeof(vertex_t), &_this->vxBuffer->n);
+                }
+                else
+                    ::glDisableClientState(GL_NORMAL_ARRAY);
+
+                // Enable color pointer
+                if (bstate & DBUF_COLOR)
+                {
+                    ::glEnableClientState(GL_COLOR_ARRAY);
+                    ::glColorPointer(4, GL_FLOAT, sizeof(vertex_t), &_this->vxBuffer->c);
+                }
+                else
+                {
+                    ::glColor4fv(&buffer->color.dfl.r);         // Set-up default color
+                    ::glDisableClientState(GL_COLOR_ARRAY);
+                }
+
+                // Compute stride values and indices
+                const uint32_t *vindex  = buffer->vertex.index;
+                const uint32_t *nindex  = buffer->normal.index;
+                const uint32_t *cindex  = buffer->color.index;
+                const uint8_t  *vbuf    = reinterpret_cast<const uint8_t *>(buffer->vertex.data);
+                const uint8_t  *nbuf    = reinterpret_cast<const uint8_t *>(buffer->normal.data);
+                const uint8_t  *cbuf    = reinterpret_cast<const uint8_t *>(buffer->color.data);
+                size_t vstride          = (buffer->vertex.stride == 0) ? sizeof(r3d::dot4_t)  : buffer->vertex.stride;
+                size_t nstride          = (buffer->normal.stride == 0) ? sizeof(r3d::vec4_t)  : buffer->normal.stride;
+                size_t cstride          = (buffer->color.stride == 0)  ? sizeof(r3d::color_t) : buffer->color.stride;
+
+                for (size_t off = 0; off < count; )
+                {
+                    size_t to_do    = count - off;
+                    if (to_do > VATTR_BUFFER_SIZE)
+                        to_do           = VATTR_BUFFER_SIZE;
+
+                    // Fill the temporary buffer data
+                    vertex_t *vx    = _this->vxBuffer;
+                    for (size_t i=0; i<to_do; ++i)
+                    {
+                        size_t vxi      = off + i;
+
+                        // Add vertex coordinates
+                        if (bstate & DBUF_VINDEX)
+                            vx->v       = *(reinterpret_cast<const dot4_t *>(&vbuf[vindex[vxi] * vstride]));
+                        else
+                            vx->v       = *(reinterpret_cast<const dot4_t *>(&vbuf[vxi * vstride]));
+
+                        // Add normal coordinates if present
+                        if (bstate & DBUF_NORMAL)
+                        {
+                            if (bstate & DBUF_NINDEX)
+                                vx->n       = *(reinterpret_cast<const vec4_t *>(&nbuf[nindex[vxi] * nstride]));
+                            else
+                                vx->n       = *(reinterpret_cast<const vec4_t *>(&nbuf[vxi * nstride]));
+                        }
+
+                        // Add color coordinates if present
+                        if (bstate & DBUF_COLOR)
+                        {
+                            if (bstate & DBUF_CINDEX)
+                                vx->c       = *(reinterpret_cast<const color_t *>(&cbuf[cindex[vxi] * cstride]));
+                            else
+                                vx->c       = *(reinterpret_cast<const color_t *>(&cbuf[vxi * cstride]));
+                        }
+                    }
+
+                    // Draw the buffer
+                    if (buffer->type != r3d::PRIMITIVE_WIREFRAME_TRIANGLES)
+                        ::glDrawArrays(mode, 0, count);
+                    else
+                    {
+                        for (size_t i=0; i<count; i += 3)
+                            ::glDrawArrays(mode, i, 3);
+                    }
+
+                    // Update offset
+                    off            += to_do;
+                }
+
+                // Disable previous settings
+                if (bstate & DBUF_COLOR)
+                    ::glDisableClientState(GL_COLOR_ARRAY);
+                if (bstate & DBUF_NORMAL)
+                    ::glDisableClientState(GL_NORMAL_ARRAY);
+                ::glDisableClientState(GL_VERTEX_ARRAY);
+            }
+
             status_t backend_t::draw_primitives(r3d::backend_t *handle, const r3d::buffer_t *buffer)
             {
                 backend_t *_this = static_cast<backend_t *>(handle);
@@ -487,8 +685,11 @@ namespace lsp
                 if (buffer->count <= 0)
                     return STATUS_OK;
 
+                //-------------------------------------------------------------
                 // Select the drawing mode
-                GLenum mode;
+
+                // Check primitive type to draw
+                GLenum mode  = GL_TRIANGLES;
                 size_t count = buffer->count;
 
                 switch (buffer->type)
@@ -515,6 +716,28 @@ namespace lsp
                         return STATUS_BAD_ARGUMENTS;
                 }
 
+                size_t bstate = 0;
+                if (buffer->vertex.data == NULL)
+                    return STATUS_BAD_ARGUMENTS;
+                if (buffer->vertex.index != NULL)
+                    bstate     |= DBUF_VINDEX;
+
+                if (buffer->normal.data != NULL)
+                    bstate     |= DBUF_NORMAL;
+                if (buffer->normal.index != NULL)
+                    bstate     |= DBUF_NINDEX;
+
+                if (buffer->color.data != NULL)
+                    bstate     |= DBUF_COLOR;
+                if (buffer->color.index != NULL)
+                    bstate     |= DBUF_CINDEX;
+
+                if (((bstate & DBUF_NORMAL_FLAGS) == DBUF_NINDEX) ||
+                    ((bstate & DBUF_COLOR_FLAGS) == DBUF_CINDEX))
+                    return STATUS_BAD_ARGUMENTS; // Index buffers can not be definde without data buffers
+
+                //-------------------------------------------------------------
+                // Prepare drawing state
                 // Load matrices
                 ::glMatrixMode(GL_PROJECTION);
                 ::glLoadMatrixf(_this->matProjection.m);
@@ -534,76 +757,15 @@ namespace lsp
                 if (buffer->flags & r3d::BUFFER_NO_CULLING)
                     ::glDisable(GL_CULL_FACE);
 
-                // Enable vertex pointer (if present)
-                if (buffer->vertex.data != NULL)
-                {
-                    ::glEnableClientState(GL_VERTEX_ARRAY);
-                    ::glVertexPointer(4, GL_FLOAT,
-                        (buffer->vertex.stride == 0) ? sizeof(r3d::dot4_t) : buffer->vertex.stride,
-                        buffer->vertex.data
-                    );
-                }
+                //-------------------------------------------------------------
+                // Draw the buffer data
+                if (!(bstate & (DBUF_NINDEX | DBUF_CINDEX)))
+                    gl_draw_arrays_simple(mode, bstate, buffer, count);
                 else
-                    ::glDisableClientState(GL_VERTEX_ARRAY);
+                    gl_draw_arrays_indexed(handle, mode, bstate, buffer, count);
 
-                // Enable normal pointer
-                if (buffer->normal.data != NULL)
-                {
-                    ::glEnableClientState(GL_NORMAL_ARRAY);
-                    ::glNormalPointer(GL_FLOAT,
-                        (buffer->normal.stride == 0) ? sizeof(r3d::vec4_t) : buffer->normal.stride,
-                        buffer->normal.data
-                    );
-                }
-                else
-                    ::glDisableClientState(GL_NORMAL_ARRAY);
-
-                // Enable color pointer
-                if (buffer->color.data != NULL)
-                {
-                    ::glEnableClientState(GL_COLOR_ARRAY);
-                    ::glColorPointer(4, GL_FLOAT,
-                        (buffer->color.stride == 0) ? sizeof(r3d::color_t) : buffer->color.stride,
-                        buffer->color.data
-                    );
-                }
-                else
-                {
-                    ::glColor4fv(&buffer->color.dfl.r);         // Set-up default color
-                    ::glDisableClientState(GL_COLOR_ARRAY);
-                }
-
-                // Draw the elements (or arrays, depending on configuration)
-                if (buffer->type != r3d::PRIMITIVE_WIREFRAME_TRIANGLES)
-                {
-                    if (buffer->element.index != NULL)
-                        ::glDrawElements(mode, count, GL_UNSIGNED_INT, buffer->element.index);
-                    else
-                        ::glDrawArrays(mode, 0, count);
-                }
-                else
-                {
-                    if (buffer->element.index != NULL)
-                    {
-                        const uint32_t *ptr = buffer->element.index;
-                        for (size_t i=0; i<count; i += 3, ptr += 3)
-                            ::glDrawElements(mode, 3, GL_UNSIGNED_INT, ptr);
-                    }
-                    else
-                    {
-                        for (size_t i=0; i<count; i += 3)
-                            ::glDrawArrays(mode, i, 3);
-                    }
-                }
-
-                // Disable previous settings
-                if (buffer->color.data != NULL)
-                    ::glDisableClientState(GL_COLOR_ARRAY);
-                if (buffer->normal.data != NULL)
-                    ::glDisableClientState(GL_NORMAL_ARRAY);
-                if (buffer->vertex.data != NULL)
-                    ::glDisableClientState(GL_VERTEX_ARRAY);
-
+                //-------------------------------------------------------------
+                // Reset the drawing state
                 if (buffer->flags & r3d::BUFFER_BLENDING)
                     ::glDisable(GL_BLEND);
                 if (buffer->flags & r3d::BUFFER_LIGHTING)

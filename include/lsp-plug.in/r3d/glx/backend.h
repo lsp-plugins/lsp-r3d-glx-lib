@@ -38,6 +38,14 @@ namespace lsp
     {
         namespace glx
         {
+            typedef struct vertex_t
+            {
+                dot4_t          v;      // Vertex
+                vec4_t          n;      // Normal
+                color_t         c;      // Color
+            } vertex_t;
+
+
             typedef struct backend_t: public r3d::base_backend_t
             {
                 Display            *pDisplay;
@@ -48,6 +56,8 @@ namespace lsp
                 bool                bVisible;
                 bool                bDrawing;
                 bool                bPBuffer;
+
+                vertex_t           *vxBuffer;       // Temporary vertex buffer
 
                 void                construct();
                 explicit            backend_t();
