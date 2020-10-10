@@ -622,7 +622,7 @@ namespace lsp
 
                     // Fill the temporary buffer data
                     vertex_t *vx    = _this->vxBuffer;
-                    for (size_t i=0; i<to_do; ++i)
+                    for (size_t i=0; i<to_do; ++i, ++vx)
                     {
                         size_t vxi      = off + i;
 
