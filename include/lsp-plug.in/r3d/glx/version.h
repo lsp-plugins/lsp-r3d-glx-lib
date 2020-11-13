@@ -24,7 +24,7 @@
 
 #define LSP_R3D_GLX_LIB_MAJOR           0
 #define LSP_R3D_GLX_LIB_MINOR           5
-#define LSP_R3D_GLX_LIB_MICRO           3
+#define LSP_R3D_GLX_LIB_MICRO           4
 
 #ifdef LSP_R3D_GLX_LIB_BUILTIN
     #define LSP_R3D_GLX_LIB_EXPORT
