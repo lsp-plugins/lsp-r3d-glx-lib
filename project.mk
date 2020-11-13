@@ -24,7 +24,7 @@ ARTIFACT_DESC               = GLX-based 3D backend library for rendering scenes
 ARTIFACT_VARS               = LSP_R3D_GLX_LIB
 ARTIFACT_HEADERS            = lsp-plug.in
 ARTIFACT_EXPORT_ALL         = 0
-ARTIFACT_VERSION            = 0.5.3-devel
+ARTIFACT_VERSION            = 0.5.3
 
 # List of dependencies
 TEST_DEPENDENCIES = \
