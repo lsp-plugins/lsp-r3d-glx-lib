@@ -39,15 +39,15 @@ LSP_R3D_BASE_LIB_NAME      := lsp-r3d-base-lib
 LSP_R3D_BASE_LIB_TYPE      := src
 LSP_R3D_BASE_LIB_URL       := https://github.com/sadko4u/$(LSP_R3D_BASE_LIB_NAME).git
 
-XLIB_VERSION               := system
-XLIB_NAME                  := x11
-XLIB_TYPE                  := pkg
+LIBX11_VERSION             := system
+LIBX11_NAME                := x11
+LIBX11_TYPE                := pkg
 
-OPENGL_VERSION             := system
-OPENGL_NAME                := gl
-OPENGL_TYPE                := pkg
+LIBGL_VERSION              := system
+LIBGL_NAME                 := gl
+LIBGL_TYPE                 := pkg
 
-STDLIB_VERSION             := system
-STDLIB_LDFLAGS             := -lpthread -ldl
-STDLIB_TYPE                := opt
-
+LIBPTHREAD_VERSION         := system
+LIBPTHREAD_NAME            := libpthread
+LIBPTHREAD_TYPE            := opt
+LIBPTHREAD_LDFLAGS         := -lpthread
