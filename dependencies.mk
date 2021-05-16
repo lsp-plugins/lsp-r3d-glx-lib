@@ -22,22 +22,22 @@
 LSP_COMMON_LIB_VERSION     := 1.0.10
 LSP_COMMON_LIB_NAME        := lsp-common-lib
 LSP_COMMON_LIB_TYPE        := src
-LSP_COMMON_LIB_URL         := https://github.com/sadko4u/$(LSP_COMMON_LIB_NAME).git
+LSP_COMMON_LIB_URL         := git@github.com:sadko4u/$(LSP_COMMON_LIB_NAME).git
 
 LSP_TEST_FW_VERSION        := 1.0.6
 LSP_TEST_FW_NAME           := lsp-test-fw
 LSP_TEST_FW_TYPE           := src
-LSP_TEST_FW_URL            := https://github.com/sadko4u/$(LSP_TEST_FW_NAME).git
+LSP_TEST_FW_URL            := git@github.com:sadko4u/$(LSP_TEST_FW_NAME).git
 
 LSP_R3D_IFACE_VERSION      := 0.5.1
 LSP_R3D_IFACE_NAME         := lsp-r3d-iface
 LSP_R3D_IFACE_TYPE         := src
-LSP_R3D_IFACE_URL          := https://github.com/sadko4u/$(LSP_R3D_IFACE_NAME).git
+LSP_R3D_IFACE_URL          := git@github.com:sadko4u/$(LSP_R3D_IFACE_NAME).git
 
 LSP_R3D_BASE_LIB_VERSION   := 0.5.4
 LSP_R3D_BASE_LIB_NAME      := lsp-r3d-base-lib
 LSP_R3D_BASE_LIB_TYPE      := src
-LSP_R3D_BASE_LIB_URL       := https://github.com/sadko4u/$(LSP_R3D_BASE_LIB_NAME).git
+LSP_R3D_BASE_LIB_URL       := git@github.com:sadko4u/$(LSP_R3D_BASE_LIB_NAME).git
 
 LIBX11_VERSION             := system
 LIBX11_NAME                := x11
