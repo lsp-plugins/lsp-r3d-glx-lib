@@ -750,7 +750,10 @@ namespace lsp
                 if (buffer->flags & r3d::BUFFER_BLENDING)
                 {
                     ::glEnable(GL_BLEND);
-                    ::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                    if (buffer->flags & r3d::BUFFER_STD_BLENDING)
+                        ::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                    else
+                        ::glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
                 }
                 if (buffer->flags & r3d::BUFFER_LIGHTING)
                     ::glEnable(GL_LIGHTING);
