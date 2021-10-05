@@ -439,6 +439,10 @@ namespace lsp
                 // Enable all possible lights
                 size_t light_id = GL_LIGHT0;
 
+                ::glMatrixMode(GL_MODELVIEW);
+                ::glPushMatrix();
+                ::glLoadIdentity();
+
                 for (size_t i=0; i<count; ++i)
                 {
                     // Skip disabled lights
@@ -495,6 +499,8 @@ namespace lsp
                 // Disable all other non-related lights
                 while (light_id <= GL_LIGHT7)
                     ::glDisable(light_id++);
+
+                ::glPopMatrix();
 
                 return STATUS_OK;
             }
