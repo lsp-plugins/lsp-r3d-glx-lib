@@ -21,23 +21,27 @@
 # Variables that describe dependencies
 LSP_COMMON_LIB_VERSION     := 1.0.14
 LSP_COMMON_LIB_NAME        := lsp-common-lib
-LSP_COMMON_LIB_TYPE        := hdr
-LSP_COMMON_LIB_URL         := git@github.com:lsp-plugins/$(LSP_COMMON_LIB_NAME).git
+LSP_COMMON_LIB_TYPE        := src
+LSP_COMMON_LIB_URL_RO      := https://github.com/lsp-plugins/$(LSP_COMMON_LIB_NAME).git
+LSP_COMMON_LIB_URL_RW      := git@github.com:lsp-plugins/$(LSP_COMMON_LIB_NAME).git
 
 LSP_TEST_FW_VERSION        := 1.0.8
 LSP_TEST_FW_NAME           := lsp-test-fw
 LSP_TEST_FW_TYPE           := src
-LSP_TEST_FW_URL            := git@github.com:lsp-plugins/$(LSP_TEST_FW_NAME).git
+LSP_TEST_FW_URL_RO         := https://github.com/lsp-plugins/$(LSP_TEST_FW_NAME).git
+LSP_TEST_FW_URL_RW         := git@github.com:lsp-plugins/$(LSP_TEST_FW_NAME).git
 
 LSP_R3D_IFACE_VERSION      := 0.5.2
 LSP_R3D_IFACE_NAME         := lsp-r3d-iface
 LSP_R3D_IFACE_TYPE         := src
-LSP_R3D_IFACE_URL          := git@github.com:lsp-plugins/$(LSP_R3D_IFACE_NAME).git
+LSP_R3D_IFACE_URL_RO       := https://github.com/lsp-plugins/$(LSP_R3D_IFACE_NAME).git
+LSP_R3D_IFACE_URL_RW       := git@github.com:lsp-plugins/$(LSP_R3D_IFACE_NAME).git
 
 LSP_R3D_BASE_LIB_VERSION   := 0.5.5
 LSP_R3D_BASE_LIB_NAME      := lsp-r3d-base-lib
 LSP_R3D_BASE_LIB_TYPE      := src
-LSP_R3D_BASE_LIB_URL       := git@github.com:lsp-plugins/$(LSP_R3D_BASE_LIB_NAME).git
+LSP_R3D_BASE_LIB_URL_RO    := https://github.com/lsp-plugins/$(LSP_R3D_BASE_LIB_NAME).git
+LSP_R3D_BASE_LIB_URL_RW    := git@github.com:lsp-plugins/$(LSP_R3D_BASE_LIB_NAME).git
 
 LIBX11_VERSION             := system
 LIBX11_NAME                := x11
