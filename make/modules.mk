@@ -46,6 +46,10 @@ ifeq ($(TREE),1)
   MODULES                := $(BASEDIR)/modules
   GIT                    := git
   
+  $(foreach dep,$(UNIQ_ALL_DEPENDENCIES), \
+    $(eval $(dep)_URL=$($(dep)_URL_RO)) \
+  )
+  
   ifeq ($(findstring -devel,$(ARTIFACT_VERSION)),-devel)
     $(foreach dep, $(UNIQ_ALL_DEPENDENCIES), \
       $(eval $(dep)_BRANCH=devel) \
@@ -64,8 +68,7 @@ SRC_MODULES         = $(foreach dep, $(UNIQ_MERGED_DEPENDENCIES), $(if $(findstr
 HDR_MODULES         = $(foreach dep, $(UNIQ_MERGED_DEPENDENCIES), $(if $(findstring hdr,$($(dep)_TYPE)),$(dep)))
 ALL_SRC_MODULES     = $(foreach dep, $(UNIQ_ALL_DEPENDENCIES), $(if $(findstring src,$($(dep)_TYPE)),$(dep)))
 ALL_HDR_MODULES     = $(foreach dep, $(UNIQ_ALL_DEPENDENCIES), $(if $(findstring hdr,$($(dep)_TYPE)),$(dep)))
-ALL_BIN_MODULES     = $(foreach dep, $(UNIQ_ALL_DEPENDENCIES), $(if $(findstring bin,$($(dep)_TYPE)),$(dep)))
-ALL_PLUG_MODULES    = $(foreach dep, $(UNIQ_ALL_DEPENDENCIES), $(if $(findstring plug,$($(dep)_TYPE)),$(dep)))
+ALL_PATHS           = $(foreach dep, $(ALL_SRC_MODULES) $(ALL_HDR_MODULES), $($(dep)_PATH))
 
 # Branches
 .PHONY: $(ALL_SRC_MODULES) $(ALL_HDR_MODULES) $(ALL_PATHS)
