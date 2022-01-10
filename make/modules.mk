@@ -24,7 +24,7 @@ endif
 BASEDIR                := $(CURDIR)
 DEPLIST                := $(BASEDIR)/dependencies.mk
 PROJECT                := $(BASEDIR)/project.mk
-CONFIG                 := $(CURDIR)/.config.mk
+CONFIG                 := $(BASEDIR)/.config.mk
 
 include $(BASEDIR)/make/functions.mk
 ifeq ($(TREE),1)
@@ -39,7 +39,7 @@ MERGED_DEPENDENCIES        := \
   $(DEPENDENCIES) \
   $(TEST_DEPENDENCIES)
 UNIQ_MERGED_DEPENDENCIES   := $(call uniq, $(MERGED_DEPENDENCIES))
-UNIQ_ALL_DEPENDENCIES      := $(call uniq, $(ALL_DEPENDENCIES) $(PLUGIN_DEPENDENCIES))
+UNIQ_ALL_DEPENDENCIES      := $(call uniq, $(ALL_DEPENDENCIES))
 
 # Find the proper branch of the GIT repository
 ifeq ($(TREE),1)
