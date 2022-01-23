@@ -32,6 +32,10 @@ namespace lsp
             // Version function
             LSP_R3D_GLX_LIB_CEXPORT
             LSP_DEFINE_VERSION_FUNC(LSP_R3D_GLX_LIB)
+
+            // Specify the version of the R3D interface in use
+            LSP_R3D_GLX_LIB_CEXPORT
+            LSP_R3D_IFACE_DEF_VERSION_FUNC
         }
     }
 }
