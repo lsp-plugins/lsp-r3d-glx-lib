@@ -29,10 +29,13 @@ namespace lsp
     {
         namespace glx
         {
-            factory_t   factory;
+            // Version function
+            LSP_R3D_GLX_LIB_CEXPORT
+            LSP_DEFINE_VERSION_FUNC(LSP_R3D_GLX_LIB)
 
-            // Builtin factory binding
-            LSP_R3D_BUILTIN_FACTORY(builtin_glx_factory, &lsp::r3d::glx::factory);
+            // Specify the version of the R3D interface in use
+            LSP_R3D_GLX_LIB_CEXPORT
+            LSP_R3D_IFACE_DEF_VERSION_FUNC
         }
     }
 }
