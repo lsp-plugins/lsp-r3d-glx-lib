@@ -3,6 +3,7 @@
 *******************************************************************************
 
 === 1.0.1 ===
+* Updated build scripts.
 
 === 1.0.0 ===
 * GLX backend now provides the version of used R3D interface.
