@@ -33,7 +33,12 @@ namespace lsp
         {
             const r3d::backend_metadata_t factory_t::sMetadata[] =
             {
-                { "glx_2x", "openGL 2.0+ (GLX)", "glx_opengl_v2" }
+                {
+                    "glx_2x",
+                    "openGL 2.0+ (GLX)",
+                    "glx_opengl_v2",
+                    WND_HANDLE_X11
+                }
             };
 
             const r3d::backend_metadata_t *factory_t::metadata(r3d::factory_t *handle, size_t id)
