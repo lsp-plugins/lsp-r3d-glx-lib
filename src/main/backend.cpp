@@ -821,7 +821,7 @@ namespace lsp
                 for (ssize_t i=0; i<_this->viewHeight; ++i)
                 {
                     ssize_t row  = _this->viewHeight - i - 1;
-                    ::glReadPixels(0, row, _this->viewWidth, 1, fmt, GL_UNSIGNED_INT_8_8_8_8, ptr);
+                    ::glReadPixels(0, row, _this->viewWidth, 1, fmt, GL_UNSIGNED_BYTE, ptr);
                     ptr     += stride;
                 }
 
