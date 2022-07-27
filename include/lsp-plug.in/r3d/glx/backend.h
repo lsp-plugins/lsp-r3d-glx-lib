@@ -73,7 +73,7 @@ namespace lsp
                 static status_t     set_lights(r3d::backend_t *handle, const r3d::light_t *lights, size_t count);
                 static status_t     draw_primitives(r3d::backend_t *handle, const r3d::buffer_t *buffer);
                 static status_t     sync(r3d::backend_t *handle);
-                static status_t     read_pixels(r3d::backend_t *handle, void *buf, size_t stride, r3d::pixel_format_t format);
+                static status_t     read_pixels(r3d::backend_t *handle, void *buf, r3d::pixel_format_t format);
                 static status_t     finish(r3d::backend_t *handle);
 
             } backend_t;
