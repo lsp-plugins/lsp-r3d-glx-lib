@@ -18,22 +18,6 @@
 # along with lsp-r3d-glx-lib.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-# List of dependencies
-DEPENDENCIES = \
-  LIBPTHREAD \
-  LIBX11 \
-  LIBGL \
-  LSP_COMMON_LIB \
-  LSP_R3D_IFACE \
-  LSP_R3D_BASE_LIB
-
-TEST_DEPENDENCIES = \
-  LSP_TEST_FW
-
-ALL_DEPENDENCIES = \
-  $(DEPENDENCIES) \
-  $(TEST_DEPENDENCIES)
-
 #------------------------------------------------------------------------------
 # List of common dependencies
 DEPENDENCIES = \
