@@ -77,8 +77,8 @@ namespace lsp
                 static status_t     finish(r3d::backend_t *handle);
 
             } backend_t;
-        }
-    }
-}
+        } /* namespace glx */
+    } /* namespace r3d */
+} /* namespace lsp */
 
 #endif /* PRIVATE_GLX_BACKEND_H_ */

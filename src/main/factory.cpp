@@ -70,8 +70,8 @@ namespace lsp
             factory_t::~factory_t()
             {
             }
-        }
-    }
-}
+        } /* namespace glx */
+    } /* namespace r3d */
+} /* namespace lsp */
 
 

@@ -850,7 +850,7 @@ namespace lsp
 
                 return STATUS_OK;
             }
-        }
-    }
-}
+        } /* namespace glx */
+    } /* namespace r3d */
+} /* namespace lsp */
 
