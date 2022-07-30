@@ -18,7 +18,8 @@
 # along with lsp-r3d-glx-lib.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-# Variables that describe dependencies
+#------------------------------------------------------------------------------
+# Variables that describe source code dependencies
 LSP_COMMON_LIB_VERSION     := 1.0.20
 LSP_COMMON_LIB_NAME        := lsp-common-lib
 LSP_COMMON_LIB_TYPE        := src
@@ -43,11 +44,8 @@ LSP_R3D_BASE_LIB_TYPE      := src
 LSP_R3D_BASE_LIB_URL_RO    := https://github.com/lsp-plugins/$(LSP_R3D_BASE_LIB_NAME).git
 LSP_R3D_BASE_LIB_URL_RW    := git@github.com:lsp-plugins/$(LSP_R3D_BASE_LIB_NAME).git
 
-LIBPTHREAD_VERSION         := system
-LIBPTHREAD_NAME            := libpthread
-LIBPTHREAD_TYPE            := opt
-LIBPTHREAD_LDFLAGS         := -lpthread
-
+#------------------------------------------------------------------------------
+# Variables that describe system dependencies
 LIBX11_VERSION             := system
 LIBX11_NAME                := x11
 LIBX11_TYPE                := pkg
