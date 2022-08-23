@@ -71,7 +71,7 @@ jobs:
       image: opensuse/leap:latest
     steps:
       - name: Install dependencies
-        run: zypper --non-interactive --no-gpg-checks in tar gzip git make valgrind gcc gcc-c++ libX11-devel libglvnd-devel Mesa-libglapi-devel
+        run: zypper --non-interactive --no-gpg-checks in tar gzip git make valgrind gcc gcc-c++ libX11-devel libglvnd-devel Mesa-libGL-devel
       - uses: actions/checkout@v2
       - name: Configure project
         run: make config TEST=1
