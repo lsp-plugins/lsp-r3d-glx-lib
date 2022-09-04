@@ -61,4 +61,7 @@ $(LSP_R3D_GLX_LIB_BIN)/export/factory.o: export/factory.cpp \
  $(LSP_R3D_IFACE_INC)/lsp-plug.in/r3d/iface/types.h \
  $(LSP_R3D_GLX_LIB_INC)/lsp-plug.in/r3d/glx/version.h \
  $(LSP_R3D_IFACE_INC)/lsp-plug.in/r3d/iface/builtin.h
-$(LSP_R3D_GLX_LIB_BIN)/test/main.o: test/main.cpp
+$(LSP_R3D_GLX_LIB_BIN)/test/main.o: test/main.cpp \
+ $(LSP_TEST_FW_INC)/lsp-plug.in/test-fw/main.h \
+ $(LSP_TEST_FW_INC)/lsp-plug.in/test-fw/version.h \
+ $(LSP_TEST_FW_INC)/lsp-plug.in/test-fw/types.h

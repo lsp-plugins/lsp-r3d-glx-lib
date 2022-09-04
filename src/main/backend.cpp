@@ -797,7 +797,7 @@ namespace lsp
                 return STATUS_OK;
             }
 
-            status_t backend_t::read_pixels(r3d::backend_t *handle, void *buf, size_t stride, r3d::pixel_format_t format)
+            status_t backend_t::read_pixels(r3d::backend_t *handle, void *buf, r3d::pixel_format_t format)
             {
                 backend_t *_this = static_cast<backend_t *>(handle);
 
@@ -805,25 +805,32 @@ namespace lsp
                     return STATUS_BAD_STATE;
 
                 size_t fmt;
+                size_t row_size;
                 switch (format)
                 {
-                    case r3d::PIXEL_RGBA:   fmt     = GL_RGBA; break;
-                    case r3d::PIXEL_BGRA:   fmt     = GL_BGRA; break;
-                    case r3d::PIXEL_RGB:    fmt     = GL_RGB;  break;
-                    case r3d::PIXEL_BGR:    fmt     = GL_BGR;  break;
+                    case r3d::PIXEL_RGBA:
+                        fmt         = GL_RGBA;
+                        row_size    = _this->viewWidth * 4;
+                        break;
+                    case r3d::PIXEL_BGRA:
+                        fmt         = GL_BGRA;
+                        row_size    = _this->viewWidth * 4;
+                        break;
+                    case r3d::PIXEL_RGB:
+                        fmt         = GL_RGB;
+                        row_size    = _this->viewWidth * 3;
+                        break;
+                    case r3d::PIXEL_BGR:
+                        fmt         = GL_BGR;
+                        row_size    = _this->viewWidth * 3;
+                        break;
                     default:
                         return STATUS_BAD_ARGUMENTS;
                 }
 
                 ::glReadBuffer(_this->bPBuffer ? GL_BACK : GL_FRONT);
-
-                uint8_t *ptr = reinterpret_cast<uint8_t *>(buf);
-                for (ssize_t i=0; i<_this->viewHeight; ++i)
-                {
-                    ssize_t row  = _this->viewHeight - i - 1;
-                    ::glReadPixels(0, row, _this->viewWidth, 1, fmt, GL_UNSIGNED_INT_8_8_8_8, ptr);
-                    ptr     += stride;
-                }
+                ::glReadPixels(0, 0, _this->viewWidth, _this->viewHeight, fmt, GL_UNSIGNED_BYTE, buf);
+                base_backend_t::swap_rows(buf, _this->viewHeight, row_size);
 
                 return STATUS_OK;
             }
@@ -843,7 +850,7 @@ namespace lsp
 
                 return STATUS_OK;
             }
-        }
-    }
-}
+        } /* namespace glx */
+    } /* namespace r3d */
+} /* namespace lsp */
 

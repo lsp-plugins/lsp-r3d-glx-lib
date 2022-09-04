@@ -2,6 +2,10 @@
 * RECENT CHANGES
 *******************************************************************************
 
+=== 1.0.5 ===
+* Updated interface to conform lsp-r3d-iface.
+* Updated build scripts.
+
 === 1.0.4 ===
 * Updated build scripts.
 

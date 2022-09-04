@@ -33,6 +33,6 @@ namespace lsp
 
             // Builtin factory binding
             LSP_R3D_BUILTIN_FACTORY(builtin_glx_factory, &lsp::r3d::glx::factory);
-        }
-    }
-}
+        } /* namespace glx */
+    } /* namespace r3d */
+} /* namespace lsp */

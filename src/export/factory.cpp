@@ -29,9 +29,12 @@ namespace lsp
     {
         namespace glx
         {
-            // Function that returns factory
-            LSP_R3D_GLX_LIB_CEXPORT
-            LSP_R3D_BULTIN_FACTORY_FUNCTION
-        }
-    }
-}
+            extern "C"
+            {
+                // Function that returns factory
+                LSP_R3D_GLX_LIB_PUBLIC
+                LSP_R3D_BULTIN_FACTORY_FUNCTION
+            }
+        } /* namespace glx */
+    } /* namespace r3d */
+} /* namespace lsp */
