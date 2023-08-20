@@ -23,5 +23,5 @@ ARTIFACT_ID                 = LSP_R3D_GLX_LIB
 ARTIFACT_NAME               = lsp-r3d-glx-lib
 ARTIFACT_DESC               = GLX-based 3D backend library for rendering scenes
 ARTIFACT_HEADERS            = lsp-plug.in
-ARTIFACT_VERSION            = 1.0.12
+ARTIFACT_VERSION            = 1.0.13
 ARTIFACT_EXPORT_HEADERS     = 0
