@@ -20,7 +20,7 @@
 
 #------------------------------------------------------------------------------
 # Variables that describe source code dependencies
-LSP_COMMON_LIB_VERSION     := 1.0.30
+LSP_COMMON_LIB_VERSION     := 1.0.31
 LSP_COMMON_LIB_NAME        := lsp-common-lib
 LSP_COMMON_LIB_TYPE        := src
 LSP_COMMON_LIB_URL_RO      := https://github.com/lsp-plugins/$(LSP_COMMON_LIB_NAME).git
@@ -32,13 +32,13 @@ LSP_TEST_FW_TYPE           := src
 LSP_TEST_FW_URL_RO         := https://github.com/lsp-plugins/$(LSP_TEST_FW_NAME).git
 LSP_TEST_FW_URL_RW         := git@github.com:lsp-plugins/$(LSP_TEST_FW_NAME).git
 
-LSP_R3D_IFACE_VERSION      := 1.0.13
+LSP_R3D_IFACE_VERSION      := 1.0.14
 LSP_R3D_IFACE_NAME         := lsp-r3d-iface
 LSP_R3D_IFACE_TYPE         := src
 LSP_R3D_IFACE_URL_RO       := https://github.com/lsp-plugins/$(LSP_R3D_IFACE_NAME).git
 LSP_R3D_IFACE_URL_RW       := git@github.com:lsp-plugins/$(LSP_R3D_IFACE_NAME).git
 
-LSP_R3D_BASE_LIB_VERSION   := 1.0.13
+LSP_R3D_BASE_LIB_VERSION   := 1.0.14
 LSP_R3D_BASE_LIB_NAME      := lsp-r3d-base-lib
 LSP_R3D_BASE_LIB_TYPE      := src
 LSP_R3D_BASE_LIB_URL_RO    := https://github.com/lsp-plugins/$(LSP_R3D_BASE_LIB_NAME).git
