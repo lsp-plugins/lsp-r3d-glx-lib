@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2020 Linux Studio Plugins Project <https://lsp-plug.in/>
- *           (C) 2020 Vladimir Sadovnikov <sadko4u@gmail.com>
+ * Copyright (C) 2024 Linux Studio Plugins Project <https://lsp-plug.in/>
+ *           (C) 2024 Vladimir Sadovnikov <sadko4u@gmail.com>
  *
  * This file is part of lsp-r3d-glx-lib
  * Created on: 24 апр. 2019 г.
@@ -341,11 +341,14 @@ namespace lsp
                     }
 
                     // Create new pBuffer
-                    int pbuffer_attributes[]={
-                          GLX_PBUFFER_WIDTH, int(width),
-                          GLX_PBUFFER_HEIGHT, int(height),
-                          GLX_NONE
-                        };
+                    // Specifies a list of attribute value pairs, which must be terminated with None or NULL.
+                    // Accepted attributes are GLX_PBUFFER_WIDTH, GLX_PBUFFER_HEIGHT, GLX_PRESERVED_CONTENTS, and GLX_LARGEST_PBUFFER.
+                    int pbuffer_attributes[] =
+                    {
+                        GLX_PBUFFER_WIDTH, int(width),
+                        GLX_PBUFFER_HEIGHT, int(height),
+                        None
+                    };
                     _this->hPBuffer    = ::glXCreatePbuffer(_this->pDisplay, _this->pFBConfig[0], pbuffer_attributes);
                     if (_this->hPBuffer == None)
                         return STATUS_NO_MEM;

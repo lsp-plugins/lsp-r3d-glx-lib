@@ -3,6 +3,7 @@
 *******************************************************************************
 
 === 1.0.18 ===
+* Fixed invalid parameter passing to glXCreatePBuffer.
 * Updated build scripts.
 
 === 1.0.17 ===
