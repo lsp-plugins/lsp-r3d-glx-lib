@@ -5,6 +5,7 @@
 === 1.0.18 ===
 * Fixed invalid parameter passing to glXCreatePBuffer.
 * Updated build scripts.
+* Updated module versions in dependencies.
 
 === 1.0.17 ===
 * Updated build scripts.
