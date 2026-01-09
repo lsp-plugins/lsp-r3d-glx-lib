@@ -3,7 +3,7 @@
 *******************************************************************************
 
 === 1.0.27 ===
-
+* Properly save/release GLX context for rendering stage.
 
 === 1.0.26 ===
 * Updated module versions in dependencies.

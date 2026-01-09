@@ -45,6 +45,13 @@ namespace lsp
                 color_t         c;      // Color
             } vertex_t;
 
+            typedef struct old_glx_state_t
+            {
+                Display            *display;
+                XID                 write;
+                XID                 read;
+                GLXContext          context;
+            } old_glx_state_t;
 
             typedef struct backend_t: public r3d::base_backend_t
             {
@@ -53,6 +60,7 @@ namespace lsp
                 GLXPbuffer          hPBuffer;
                 GLXContext          hContext;
                 GLXFBConfig        *pFBConfig;
+                old_glx_state_t     sOldGlx;
                 bool                bVisible;
                 bool                bDrawing;
                 bool                bPBuffer;
