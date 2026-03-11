@@ -94,16 +94,21 @@ namespace lsp
             {
                 base_backend_t::construct();
 
-                pDisplay    = NULL;
-                hWnd        = None;
-                hPBuffer    = None;
-                pFBConfig   = NULL;
-                hContext    = NULL;
-                bVisible    = false;
-                bDrawing    = false;
-                bPBuffer    = false;
+                pDisplay        = NULL;
+                hWnd            = None;
+                hPBuffer        = None;
+                pFBConfig       = NULL;
+                hContext        = NULL;
+                sOldGlx.display = NULL;
+                sOldGlx.write   = None;
+                sOldGlx.read    = None;
+                sOldGlx.context = NULL;
 
-                vxBuffer    = NULL;
+                bVisible        = false;
+                bDrawing        = false;
+                bPBuffer        = false;
+
+                vxBuffer        = NULL;
 
                 // Export virtual table
                 #define R3D_GLX_BACKEND_EXP(func)   r3d::backend_t::func = backend_t::func;
@@ -384,6 +389,11 @@ namespace lsp
                     return STATUS_BAD_STATE;
 
                 // Setup current GLX context
+                _this->sOldGlx.display  = ::glXGetCurrentDisplay();
+                _this->sOldGlx.write    = ::glXGetCurrentDrawable();
+                _this->sOldGlx.read     = ::glXGetCurrentReadDrawable();
+                _this->sOldGlx.context  = ::glXGetCurrentContext();
+
                 if (_this->bPBuffer)
                 {
                     ::glXMakeContextCurrent(_this->pDisplay, _this->hPBuffer, _this->hPBuffer, _this->hContext);
@@ -392,7 +402,7 @@ namespace lsp
                 }
                 else
                 {
-                    ::glXMakeCurrent(_this->pDisplay, _this->hWnd, _this->hContext);
+                    ::glXMakeContextCurrent(_this->pDisplay, _this->hWnd, _this->hWnd, _this->hContext);
                     ::glXWaitX();
                     ::glDrawBuffer(GL_BACK);
                 }
@@ -848,8 +858,18 @@ namespace lsp
                 if (!_this->bPBuffer)
                     ::glXSwapBuffers(_this->pDisplay, _this->hWnd);
 
+                glXMakeContextCurrent(
+                    _this->sOldGlx.display,
+                    _this->sOldGlx.write,
+                    _this->sOldGlx.read,
+                    _this->sOldGlx.context);
                 ::glXWaitGL();
-                _this->bDrawing    = false;
+
+                _this->sOldGlx.display  = NULL;
+                _this->sOldGlx.write    = None;
+                _this->sOldGlx.read     = None;
+                _this->sOldGlx.context  = NULL;
+                _this->bDrawing         = false;
 
                 return STATUS_OK;
             }
