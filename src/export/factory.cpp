@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2020 Linux Studio Plugins Project <https://lsp-plug.in/>
- *           (C) 2020 Vladimir Sadovnikov <sadko4u@gmail.com>
+ * Copyright (C) 2026 Linux Studio Plugins Project <https://lsp-plug.in/>
+ *           (C) 2026 Vladimir Sadovnikov <sadko4u@gmail.com>
  *
  * This file is part of lsp-r3d-glx-lib
  * Created on: 3 мая 2020 г.
@@ -23,6 +23,8 @@
 #include <lsp-plug.in/r3d/glx/factory.h>
 #include <lsp-plug.in/r3d/iface/builtin.h>
 
+#ifndef LSP_IDE_DEBUG
+
 namespace lsp
 {
     namespace r3d
@@ -38,3 +40,5 @@ namespace lsp
         } /* namespace glx */
     } /* namespace r3d */
 } /* namespace lsp */
+
+#endif /* LSP_IDE_DEBUG */
