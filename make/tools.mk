@@ -133,7 +133,7 @@ ifeq ($(call fcheck,asan,$(BUILD_FEATURES),ON),ON)
   NOARCH_SO_FLAGS    += -fsanitize=address
 endif
 
-ifeq ($(PROFILE),1)
+ifeq ($(call fcheck,profile,$(BUILD_FEATURES),ON),ON)
   NOARCH_CFLAGS      += -pg -DLSP_PROFILE
   NOARCH_CXXFLAGS    += -pg -DLSP_PROFILE
 endif
