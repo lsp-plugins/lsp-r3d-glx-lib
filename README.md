@@ -5,6 +5,12 @@ GLX-based 3D backend library for rendering scenes
 It provides:
 * 3D rendering backend that uses OpenGL 2.0 library and GLX extensions. 
 
+## Supported platforms
+
+The build and correct unit test execution has been confirmed for following platforms:
+* FreeBSD
+* GNU/Linux
+
 Requirements
 ======
 
