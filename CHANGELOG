@@ -4,6 +4,7 @@
 
 === 1.0.30 ===
 * Updated build scripts.
+* Updated module versions in dependencies.
 
 === 1.0.29 ===
 * Updated build system: ASAN, CROSS_COMPILE, DEBUG, DEVEL, PROFILE, STRICT,
