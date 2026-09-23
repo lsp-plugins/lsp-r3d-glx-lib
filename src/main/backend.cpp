@@ -147,6 +147,13 @@ namespace lsp
                     _this->hPBuffer     = None;
                 }
 
+                // Destro FB Config
+                if (_this->pFBConfig != NULL)
+                {
+                    XFree(_this->pFBConfig);
+                    _this->pFBConfig    = NULL;
+                }
+
                 // Destroy GLX Context
                 if (_this->hContext != NULL)
                 {
@@ -430,6 +437,11 @@ namespace lsp
                 ::glClearColor(_this->colBackground.r, _this->colBackground.g, _this->colBackground.b, _this->colBackground.a);
                 ::glClearDepth(1.0);
                 ::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+                ::glMatrixMode(GL_MODELVIEW);
+                ::glLoadIdentity();
+                ::glMatrixMode(GL_PROJECTION);
+                ::glLoadIdentity();
 
                 // Mark as started
                 _this->bDrawing        = true;
@@ -841,7 +853,7 @@ namespace lsp
                         return STATUS_BAD_ARGUMENTS;
                 }
 
-                ::glReadBuffer(_this->bPBuffer ? GL_BACK : GL_FRONT);
+                ::glReadBuffer(_this->bPBuffer ? GL_FRONT : GL_BACK);
                 ::glReadPixels(0, 0, _this->viewWidth, _this->viewHeight, fmt, GL_UNSIGNED_BYTE, buf);
                 base_backend_t::swap_rows(buf, _this->viewHeight, row_size);
 
