@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2024 Linux Studio Plugins Project <https://lsp-plug.in/>
- *           (C) 2024 Vladimir Sadovnikov <sadko4u@gmail.com>
+ * Copyright (C) 2026 Linux Studio Plugins Project <https://lsp-plug.in/>
+ *           (C) 2026 Vladimir Sadovnikov <sadko4u@gmail.com>
  *
  * This file is part of lsp-r3d-glx-lib
  * Created on: 24 апр. 2019 г.
@@ -672,7 +672,7 @@ namespace lsp
 
                     // Draw the buffer
                     if (buffer->type != r3d::PRIMITIVE_WIREFRAME_TRIANGLES)
-                        ::glDrawArrays(mode, 0, count);
+                        ::glDrawArrays(mode, 0, to_do);
                     else
                     {
                         for (size_t i=0; i<count; i += 3)
