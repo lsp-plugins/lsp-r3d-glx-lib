@@ -675,7 +675,7 @@ namespace lsp
                         ::glDrawArrays(mode, 0, to_do);
                     else
                     {
-                        for (size_t i=0; i<count; i += 3)
+                        for (size_t i=0; i<to_do; i += 3)
                             ::glDrawArrays(mode, i, 3);
                     }
 
