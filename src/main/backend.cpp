@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2024 Linux Studio Plugins Project <https://lsp-plug.in/>
- *           (C) 2024 Vladimir Sadovnikov <sadko4u@gmail.com>
+ * Copyright (C) 2026 Linux Studio Plugins Project <https://lsp-plug.in/>
+ *           (C) 2026 Vladimir Sadovnikov <sadko4u@gmail.com>
  *
  * This file is part of lsp-r3d-glx-lib
  * Created on: 24 апр. 2019 г.
@@ -145,6 +145,13 @@ namespace lsp
                 {
                     ::glXDestroyPbuffer(_this->pDisplay, _this->hPBuffer);
                     _this->hPBuffer     = None;
+                }
+
+                // Destro FB Config
+                if (_this->pFBConfig != NULL)
+                {
+                    XFree(_this->pFBConfig);
+                    _this->pFBConfig    = NULL;
                 }
 
                 // Destroy GLX Context
@@ -431,6 +438,11 @@ namespace lsp
                 ::glClearDepth(1.0);
                 ::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+                ::glMatrixMode(GL_MODELVIEW);
+                ::glLoadIdentity();
+                ::glMatrixMode(GL_PROJECTION);
+                ::glLoadIdentity();
+
                 // Mark as started
                 _this->bDrawing        = true;
 
@@ -672,10 +684,10 @@ namespace lsp
 
                     // Draw the buffer
                     if (buffer->type != r3d::PRIMITIVE_WIREFRAME_TRIANGLES)
-                        ::glDrawArrays(mode, 0, count);
+                        ::glDrawArrays(mode, 0, to_do);
                     else
                     {
-                        for (size_t i=0; i<count; i += 3)
+                        for (size_t i=0; i<to_do; i += 3)
                             ::glDrawArrays(mode, i, 3);
                     }
 
@@ -841,7 +853,7 @@ namespace lsp
                         return STATUS_BAD_ARGUMENTS;
                 }
 
-                ::glReadBuffer(_this->bPBuffer ? GL_BACK : GL_FRONT);
+                ::glReadBuffer(_this->bPBuffer ? GL_FRONT : GL_BACK);
                 ::glReadPixels(0, 0, _this->viewWidth, _this->viewHeight, fmt, GL_UNSIGNED_BYTE, buf);
                 base_backend_t::swap_rows(buf, _this->viewHeight, row_size);
 
